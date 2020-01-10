@@ -1,4 +1,5 @@
-# ec2instancestartifstopped
+# ec2instancestartifstopped   
+# contact me at nehrusani@gmail.com for any python or aws lambda support.
 Start AWS EC2 instance if stopped by cloudwatch
 
 Pre-requisite:  
