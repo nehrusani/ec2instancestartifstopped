@@ -1,4 +1,5 @@
 #Please contact Nehru Saini for any help nehrusani@gmail.com
+#It is fully supported in python3.7 and boto3. And this code is for AWS lambda service only.
 
 import json
 import boto3
