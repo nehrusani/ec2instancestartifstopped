@@ -1,5 +1,7 @@
 # ec2instancestartifstopped   
 # contact me at nehrusani@gmail.com for any python or aws lambda support.
+# Good thing is this lambda python code will send you alert with instance name instead of instance id.
+
 Start AWS EC2 instance if stopped by cloudwatch
 
 Pre-requisite:  
