@@ -1,0 +1,45 @@
+#Please contact Nehru Saini for any help nehrusani@gmail.com
+
+import json
+import boto3
+import boto3.ec2
+
+
+***
+There must be tag to each ec2 instance as following:
+TagName: LambdaStartInstance
+TagValue: Enabled
+So it this lambda function will take care of each ec2 instance having above mentioned tag and if stopped then it will start and will send notification of instnace name
+In order to get notification: Pleaes USE SNS service and create one topic and define your 'TargetArn' as mentioned at below in code.
+Once more thing this code is used in AWS lambda service only not on linux/windoes system to installed
+***
+
+ec2 = boto3.resource('ec2')
+def lambda_handler(event, context):
+    filters = [{
+            'Name': 'tag:LambdaStartInstnace',
+            'Values': ['Enabled']
+        },
+        {
+            'Name': 'instance-state-name', 
+            'Values': ['stopped']
+        }
+    ]   
+    instances = ec2.instances.filter(Filters=filters)
+    stoppedInstances = [instance.id for instance in instances]
+    print(stoppedInstances)
+    stoppedInstancesTags = [instance.tags for instance in instances]
+    
+    for FilterOutTag in stoppedInstancesTags[0:1]:
+        for FilterInTag in FilterOutTag:
+            if FilterInTag['Key'] == 'Name':
+                    instancename=FilterInTag['Value']
+     #if len(stoppedInstances) > 0:
+                    message = {"Automation going to start following": instancename}
+                    client = boto3.client('sns')
+                    response = client.publish(
+                    TargetArn="arn:aws:sns:us-west-1:xxxxxxxxxxxxx:LambdaGoingToStartInstnace",
+                    Subject='Instance going to start ' + instancename,
+                    Message=json.dumps(message)
+                    )
+                    ec2.instances.filter(InstanceIds = stoppedInstances).start()
